@@ -7,7 +7,6 @@ import Alfred.Query
 import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Aeson hiding (Result)
-import Control.Applicative
 import Control.Monad
 import Data.Char
 
@@ -47,7 +46,7 @@ searchURL2 s = T.concat ["\"",url,"\" \"", url, "\""]
 mkItems :: Renderer Results
 mkItems s (Left _) = [item {arg=searchURL2 s,title=s, subtitle=suggestError s,
                         icon=Just (IconFile "notfound.png")}]
-mkItems s (Right (Results res)) = case res of 
+mkItems s (Right (Results res)) = case res of
            [] -> [item {arg=searchURL2 s,title=s,subtitle=notFound s,
                         icon=Just (IconFile "notfound.png")}]
            res -> map (mkItem s) res
@@ -61,7 +60,7 @@ mkItem s r = item {arg=arg,autocomplete=auto,
                    (_,suf):_ -> Just $ T.takeWhile (not . isSpace) suf
           arg = T.concat ["\"",location r,"\" \"", searchURL s, "\""]
 
-                 
+
 
 
 main = runScript runQuery mkItems
